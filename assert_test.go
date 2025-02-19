@@ -595,11 +595,12 @@ func TestFalse(t *testing.T) {
 	}
 }
 
-func TestEquals(t *testing.T) {
+func TestEqual(t *testing.T) {
 	type testStruct struct {
 		a int
 		b []int
 		c map[string]int
+		p *[]string
 	}
 
 	tests := []struct {
@@ -974,6 +975,19 @@ func TestEquals(t *testing.T) {
 			newBee:   newBeeWithoutColor(),
 		},
 		{
+			actual:   testStruct{p: &[]string{"a"}},
+			expected: testStruct{p: &[]string{"b"}},
+			wantErr:  true,
+			errMsg:   "a != b (*.p[0])",
+			newBee:   newBeeWithoutColor(),
+		},
+		{
+			actual:   testStruct{p: &[]string{"a"}},
+			expected: testStruct{p: &[]string{"a"}},
+			wantErr:  false,
+			newBee:   newBeeWithoutColor(),
+		},
+		{
 			actual:   true,
 			expected: 1,
 			wantErr:  true,
@@ -1338,6 +1352,13 @@ func TestEquals(t *testing.T) {
 			newBee:   newBeeWithDefaultColor(),
 		},
 		{
+			actual:   testStruct{p: &[]string{"a"}},
+			expected: testStruct{p: &[]string{"b"}},
+			wantErr:  true,
+			errMsg:   "\x1b[38;2;250;40;25ma\x1b[0m != \x1b[38;2;18;181;32mb\x1b[0m (\x1b[38;2;2;118;250m*.p[0]\x1b[0m)",
+			newBee:   newBeeWithDefaultColor(),
+		},
+		{
 			actual:   true,
 			expected: 1,
 			wantErr:  true,
@@ -1699,6 +1720,13 @@ func TestEquals(t *testing.T) {
 			expected: testStruct{c: map[string]int{"a": 1, "b": 2}},
 			wantErr:  true,
 			errMsg:   "\x1b[38;2;1;1;1m1\x1b[0m != \x1b[38;2;2;2;2m2\x1b[0m (\x1b[38;2;3;3;3mlen(.c)\x1b[0m)",
+			newBee:   newBeeWithCustomColor(),
+		},
+		{
+			actual:   testStruct{p: &[]string{"a"}},
+			expected: testStruct{p: &[]string{"b"}},
+			wantErr:  true,
+			errMsg:   "\x1b[38;2;1;1;1ma\x1b[0m != \x1b[38;2;2;2;2mb\x1b[0m (\x1b[38;2;3;3;3m*.p[0]\x1b[0m)",
 			newBee:   newBeeWithCustomColor(),
 		},
 	}

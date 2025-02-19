@@ -109,7 +109,7 @@ func (b *Bee) equals(actual, expected reflect.Value, what string) {
 	case reflect.Func:
 		// TODO: Pointer()?: func: not necessarily unique, runtime.FuncForPC to get func name from pointer
 	case reflect.Pointer:
-		// TODO: Pointer()
+		b.equals(actual.Elem(), expected.Elem(), fmt.Sprintf("*%s", what))
 	case reflect.UnsafePointer:
 		// TODO: Pointer()?
 	}
